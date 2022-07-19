@@ -14,24 +14,25 @@ use Twig\Environment;
 
 class ConferenceController extends AbstractController
 {
-    #[Route('/', name: 'Conference')]
-    public function index(Environment $twig, ConferenceRepository $repo): Response
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
+    #[Route('/', name: 'Conferences')]
+    public function index(): Response
     {
        
-        return new Response($twig->render('conference/index.html.twig',
-            [
-                'conferences' => $repo->findAll()
-            ]
-        ));
+        return new Response($this->twig->render('conference/index.html.twig'));
     }
 
     #[Route('/conference/{id}', name: 'SingleConference')]
-    public function show(Request $request, Environment $twig, Conference $conference, CommentRepository $comRepo): Response
+    public function show(Request $request, Conference $conference, CommentRepository $comRepo): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $comRepo->findByCommentPaginator($conference, $offset);
 
-        return new Response($twig->render('conference/show.html.twig',
+        return new Response($this->twig->render('conference/show.html.twig',
             [
                 'conference' => $conference,
                 'comments' => $paginator,

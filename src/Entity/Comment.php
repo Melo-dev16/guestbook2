@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Comment
 {
     #[ORM\Id]
@@ -79,9 +81,10 @@ class Comment
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
@@ -100,7 +103,12 @@ class Comment
 
     public function getPhotoFilename(): ?string
     {
-        return $this->photoFilename;
+        if (!$this->photoFilename) {
+            return null;
+        }
+        else{
+            return $this->photoFilename;
+        }
     }
 
     public function setPhotoFilename(?string $photoFilename): self

@@ -10,9 +10,16 @@
     {% if comments | length > 0 %}
         <h2>Commentaires ({{ comments | length }})</h2>
         {% for com in comments %}
-            <h4> {{ com.author }} le {{ com.createdAt | date('d-m-Y à H:i:s') }}  </h4>
-            <h5> {{ com.email }} </h5>
-            <p> {{ com.text }} </p>
+            <div style="background-color: #da66b5; color: #fff; padding: 0.5em; margin-bottom: 0.5em;">
+                <h4> {{ com.author }} le {{ com.createdAt | date('d-m-Y à H:i:s') }}  </h4>
+                <h5> {{ com.email }} </h5>
+                {% if com.photoFilename %}
+                    <p>
+                        <img width="50" height="50" src="/uploads/{{ com.photoFilename }}" /> 
+                    </p>
+                {% endif %}
+                <p> {{ com.text }} </p>
+            </div>
         {% endfor %}
         {% if previous >= 0 %}
             <a href="{{ path('SingleConference', {id: conference.id, offset: previous}) }}">Previous</a>
