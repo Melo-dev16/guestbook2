@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conference {{conference}}{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center;">
+        Conference {{conference}}
+    </h1>
+
+    {% for com in comments %}
+        <h4> {{ com.author }} le {{ com.createdAt | date('d-m-Y à H:i:s') }}  </h4>
+        <h5> {{ com.email }} </h5>
+        <p> {{ com.text }} </p>
+    {% endfor %}
+{% endblock %}
