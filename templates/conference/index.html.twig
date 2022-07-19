@@ -8,6 +8,6 @@
     </h1>
 
     {% for conference in conferences %}
-        <a href="{{ path('SingleConference', {id: conference.id}) }}"> {{ conference }} ({{conference.slug}}) </a>
+        <a href="{{ path('SingleConference', {slug: conference.slug}) }}"> {{ conference }}</a>
     {% endfor %}
 {% endblock %}
